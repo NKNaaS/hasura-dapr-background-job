@@ -1,0 +1,24 @@
+table:
+  name: job
+  schema: public
+event_triggers:
+  - name: on_job_created
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: http://host.docker.internal:3601/v1.0/publish/jobpubsub/job
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "id": {{$body.event.data.new.id}},
+            "sleep_num": {{$body.event.data.new.sleep_num}}
+          }
+      template_engine: Kriti
+      version: 2
