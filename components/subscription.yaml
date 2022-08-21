@@ -4,5 +4,6 @@ metadata:
   name: job-pub-sub
 spec:
   topic: job
-  route: /job
   pubsubname: jobpubsub
+scopes:
+  - process-job
